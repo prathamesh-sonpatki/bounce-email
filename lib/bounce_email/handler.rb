@@ -5,10 +5,12 @@ module BounceEmail
   #  I used quite much from http://www.phpclasses.org/browse/package/2691.html
   require 'mail'
   class Handler
-    attr_accessor :isbounce, :code, :reason, :type
+    attr_accessor :isbounce, :code, :reason, :type, :to, :from
 
     def initialize(mail) # You have to pass Mail object
-      @isbounce = (check_if_bounce(mail)  ? true : false)
+      @isbounce = check_if_bounce(mail)
+      @to       = mail.to
+      @from     = mail.from
 
       if @isbounce
         if mail.subject.match(/auto.*reply|vacation|vocation|(out|away).*office|on holiday/i)
