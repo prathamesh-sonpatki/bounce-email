@@ -1,8 +1,10 @@
+require "bounce_email/email/version"
+
 module BounceEmail
   VERSION = '0.0.1'
   #  I used quite much from http://www.phpclasses.org/browse/package/2691.html
   require 'mail'
-  class Mail
+  class Handler
     attr_accessor :isbounce, :code, :reason, :type
 
     def initialize(mail) # You have to pass Mail object
