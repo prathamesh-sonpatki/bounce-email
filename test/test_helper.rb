@@ -1,3 +1,8 @@
-require 'stringio'
-require 'test/unit'
-require File.dirname(__FILE__) + '/../lib/bounce-email'
+require 'simplecov'
+SimpleCov.start do
+  add_filter do |source_file|
+    source_file.filename =~ /test/
+  end
+end
+
+require 'minitest/autorun'
