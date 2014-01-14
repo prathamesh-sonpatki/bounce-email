@@ -4,36 +4,49 @@ module BounceEmail
   VERSION = '0.0.1'
   #  I used quite much from http://www.phpclasses.org/browse/package/2691.html
   require 'mail'
+
   class Handler
-    attr_accessor :isbounce, :code, :reason, :type, :to, :from
+    attr_accessor :bounced, :code, :reason, :type, :to, :from
 
     def initialize(mail) # You have to pass Mail object
-      @isbounce = check_if_bounce(mail)
-      @to       = mail.to
-      @from     = mail.from
+      @bounced = check_if_bounce(mail)
+      @to      = mail.to
+      @from    = mail.from
+      @subject = mail.subject
+      @parts   = mail.parts
+      @body    = mail.body
+      detect_reason
+    end
 
-      if @isbounce
-        if mail.subject.match(/auto.*reply|vacation|vocation|(out|away).*office|on holiday/i)
-          @reason = "Vacation auto-reply"
-        elsif !mail.parts.empty?
-          @code = mail.parts[1].body.match(/Status: ([0-9.]{0,})/)
+    def detect_reason
+      if bounced?
+        if @subject.match(/auto.*reply|vacation|vocation|(out|away).*office|on holiday/i)
+          @reason = 'Vacation auto-reply'
+        elsif !@parts.empty?
+          @code = @parts[1].body.match(/Status: ([0-9.]{0,})/)
           @code = @code[1] if !@code.nil?
         end
 
         # Try to GET status code from txt
-        @code = getStatusFromTxt(mail.body) if (@code.nil? || @code.blank?) && @reason.blank?
-        @reason = "unknown" if @code.blank?
+        @code = getStatusFromTxt(@body) if (@code.nil? || @code.blank?) && @reason.blank?
+        @reason = 'unknown' if @code.blank?
 
         if @reason.blank?
           @type = getTypeFromStatusCode(@code[0].chr.to_i)
           @reason = getReasonFromStatusCode(@code.gsub(/\./,'')[1..2])
         end
       end
-    rescue
-      @reason = "unknown"
+    rescue Exception => ex
+      p ex.message
+      @reason = 'unknown'
+    end
+
+    def bounced?
+      @bounced
     end
 
     private
+
     def getStatusFromTxt(email)
       #=begin
       # This function is taken from PHP Bounce Handler class (http://www.phpclasses.org/browse/package/2691.html)
