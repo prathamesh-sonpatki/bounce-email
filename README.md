@@ -1,5 +1,8 @@
 # Bounce::Email
 
+## Original Author : Agris Ameriks
+## Original Project Page : http://rubyforge.org/projects/bounce-email/
+
 TODO: Write a gem description
 
 ## Installation
@@ -27,3 +30,8 @@ TODO: Write usage instructions here
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+## Thanks
+
+To `Agris Ameriks` for the [original version](http://rubyforge.org/projects/bounce-email/) and `Chew Choon Keat` for
+putting it on [Github](https://github.com/choonkeat/bounce-email)
