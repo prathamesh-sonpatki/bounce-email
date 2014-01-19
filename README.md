@@ -1,7 +1,7 @@
 # Bounce::Email
 
-## Original Author : Agris Ameriks
-## Original Project Page : http://rubyforge.org/projects/bounce-email/
+##### Original Author : Agris Ameriks
+##### Original Project Page : http://rubyforge.org/projects/bounce-email/
 
 TODO: Write a gem description
 
